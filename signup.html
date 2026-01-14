@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Night Sign-Up - CAT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>CAT</h1>
+                <span class="logo-subtitle">Clement Action Team</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="signup.html" class="active">Community Night Sign-Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="signup-hero">
+        <div class="container">
+            <h1>Community Night Sign-Up</h1>
+            <div class="event-details">
+                <div class="event-detail">
+                    <span class="detail-icon">📅</span>
+                    <div>
+                        <strong>Date</strong>
+                        <p>March 18th, 2026</p>
+                    </div>
+                </div>
+                <div class="event-detail">
+                    <span class="detail-icon">🍕</span>
+                    <div>
+                        <strong>Includes</strong>
+                        <p>Free Food & Drinks</p>
+                    </div>
+                </div>
+                <div class="event-detail">
+                    <span class="detail-icon">🎤</span>
+                    <div>
+                        <strong>Features</strong>
+                        <p>Inspiring Speakers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <form id="signupForm" class="signup-form">
+                    <div class="form-group">
+                        <label for="fullName">Full Name *</label>
+                        <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="section-label">Verification * (Choose one option below)</label>
+                        <p class="form-help">To sign up, either upload a photo of yourself participating in our February or March events, or enter your access code.</p>
+                    </div>
+
+                    <div class="verification-options">
+                        <div class="verification-option">
+                            <input type="radio" id="photoOption" name="verificationType" value="photo" checked>
+                            <label for="photoOption" class="radio-label">
+                                <span class="radio-title">Upload Event Photo</span>
+                                <span class="radio-description">Photo of you at a February or March event</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group" id="photoUploadGroup">
+                            <label for="eventPhoto" class="upload-label">
+                                <span class="upload-icon">📸</span>
+                                <span class="upload-text">
+                                    <strong>Choose Photo</strong>
+                                    <span class="file-name" id="fileName">No file chosen</span>
+                                </span>
+                            </label>
+                            <input type="file" id="eventPhoto" name="eventPhoto" accept="image/*" class="file-input">
+                        </div>
+
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+
+                        <div class="verification-option">
+                            <input type="radio" id="codeOption" name="verificationType" value="code">
+                            <label for="codeOption" class="radio-label">
+                                <span class="radio-title">Enter Access Code</span>
+                                <span class="radio-description">If you have a special access code</span>
+                            </label>
+                        </div>
+
+                        <div class="form-group" id="accessCodeGroup" style="display: none;">
+                            <label for="accessCode">Access Code</label>
+                            <input type="text" id="accessCode" name="accessCode" placeholder="Enter your access code">
+                        </div>
+                    </div>
+
+                    <div id="errorMessage" class="error-message"></div>
+                    <div id="successMessage" class="success-message"></div>
+
+                    <button type="submit" class="btn btn-primary btn-submit">Complete Sign-Up</button>
+                </form>
+
+                <div class="form-info">
+                    <h3>What to Expect</h3>
+                    <ul>
+                        <li>An evening of engaging presentations from environmental experts</li>
+                        <li>Networking opportunities with fellow community members</li>
+                        <li>Delicious food and refreshments</li>
+                        <li>Learn about upcoming CAT initiatives</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Clement Action Team. Making Portland Greener, One Action at a Time.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
