@@ -75,9 +75,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const annualCommuteMiles = commuteDistance * 2 * 250;
         
         // Emissions per mile by mode (kg CO2)
+        const fuelEfficiencyFactor = (carMileage > 0) ? (carMileage / 25) : 1;
         const emissionFactors = {
-            'car-alone': 0.411 / (carMileage / 25), // Adjusted by fuel efficiency
-            'car-carpool': 0.205 / (carMileage / 25), // Half of driving alone
+            'car-alone': 0.411 / fuelEfficiencyFactor, // Adjusted by fuel efficiency
+            'car-carpool': 0.205 / fuelEfficiencyFactor, // Half of driving alone
             'electric-car': 0.15, // Lower but not zero (electricity generation)
             'public-transit': 0.14,
             'bike': 0,
@@ -308,10 +309,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Calculate percentages for bars
         const maxValue = Math.max(transportation, homeEnergy, food, consumption);
-        document.getElementById('transportBar').style.width = ((transportation / maxValue) * 100) + '%';
-        document.getElementById('homeBar').style.width = ((homeEnergy / maxValue) * 100) + '%';
-        document.getElementById('foodBar').style.width = ((food / maxValue) * 100) + '%';
-        document.getElementById('consumptionBar').style.width = ((consumption / maxValue) * 100) + '%';
+        if (maxValue > 0) {
+            document.getElementById('transportBar').style.width = ((transportation / maxValue) * 100) + '%';
+            document.getElementById('homeBar').style.width = ((homeEnergy / maxValue) * 100) + '%';
+            document.getElementById('foodBar').style.width = ((food / maxValue) * 100) + '%';
+            document.getElementById('consumptionBar').style.width = ((consumption / maxValue) * 100) + '%';
+        }
         
         // Generate personalized tips
         generateTips(total, transportation, homeEnergy, food, consumption);
