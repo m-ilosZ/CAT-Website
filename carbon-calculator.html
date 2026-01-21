@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Footprint Calculator - CAT</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1>CAT</h1>
+                <span class="logo-subtitle">Climate Action Team</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="carbon-calculator.html" class="active">Carbon Calculator</a></li>
+                <li><a href="signup.html">Community Night Sign-Up</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="about-hero">
+        <div class="container">
+            <h1>Carbon Footprint Calculator</h1>
+            <p class="about-intro">Calculate your estimated carbon footprint by answering questions about your daily habits, transportation, energy use, and lifestyle choices. See how you compare to others and get tips for reducing your environmental impact.</p>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="container">
+            <div id="calculatorContainer">
+                <form id="carbonCalculatorForm" class="signup-form">
+                    <h2 style="color: var(--primary-color); margin-bottom: 2rem;">Answer the following questions</h2>
+                    
+                    <!-- Transportation Section -->
+                    <div class="calculator-section">
+                        <h3 class="section-label">🚗 Transportation</h3>
+                        
+                        <div class="form-group">
+                            <label for="commuteDistance">1. What is your average one-way commute distance to work/school? (miles)</label>
+                            <input type="number" id="commuteDistance" name="commuteDistance" min="0" step="0.1" required placeholder="e.g., 10">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="commuteMode">2. What is your primary mode of transportation for commuting?</label>
+                            <select id="commuteMode" name="commuteMode" required>
+                                <option value="">Select...</option>
+                                <option value="car-alone">Drive alone (gas car)</option>
+                                <option value="car-carpool">Carpool (gas car)</option>
+                                <option value="electric-car">Electric vehicle</option>
+                                <option value="public-transit">Public transportation</option>
+                                <option value="bike">Bike</option>
+                                <option value="walk">Walk</option>
+                                <option value="remote">Work/study from home</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="carMileage">3. If you drive, what is your car's fuel efficiency? (miles per gallon)</label>
+                            <input type="number" id="carMileage" name="carMileage" min="0" step="0.1" placeholder="e.g., 25 (leave blank if you don't drive)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="flightShort">4. How many short-haul flights (under 3 hours) do you take per year?</label>
+                            <input type="number" id="flightShort" name="flightShort" min="0" required placeholder="e.g., 2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="flightLong">5. How many long-haul flights (over 3 hours) do you take per year?</label>
+                            <input type="number" id="flightLong" name="flightLong" min="0" required placeholder="e.g., 1">
+                        </div>
+                    </div>
+
+                    <!-- Home Energy Section -->
+                    <div class="calculator-section">
+                        <h3 class="section-label">🏠 Home Energy</h3>
+                        
+                        <div class="form-group">
+                            <label for="homeSize">6. What is your home size?</label>
+                            <select id="homeSize" name="homeSize" required>
+                                <option value="">Select...</option>
+                                <option value="small">Small (under 1000 sq ft)</option>
+                                <option value="medium">Medium (1000-2000 sq ft)</option>
+                                <option value="large">Large (over 2000 sq ft)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="householdSize">7. How many people live in your household?</label>
+                            <input type="number" id="householdSize" name="householdSize" min="1" required placeholder="e.g., 3">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="solarPanels">8. Does your home have solar panels?</label>
+                            <select id="solarPanels" name="solarPanels" required>
+                                <option value="">Select...</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="greenEnergy">9. Do you purchase green/renewable energy from your utility?</label>
+                            <select id="greenEnergy" name="greenEnergy" required>
+                                <option value="">Select...</option>
+                                <option value="yes">Yes, 100%</option>
+                                <option value="partial">Yes, partially</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="heating">10. What is your primary heating source?</label>
+                            <select id="heating" name="heating" required>
+                                <option value="">Select...</option>
+                                <option value="natural-gas">Natural gas</option>
+                                <option value="electric">Electric</option>
+                                <option value="oil">Oil</option>
+                                <option value="heat-pump">Heat pump</option>
+                                <option value="other">Other/None</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="thermostat">11. What temperature do you typically set your thermostat in winter? (°F)</label>
+                            <input type="number" id="thermostat" name="thermostat" min="50" max="80" required placeholder="e.g., 68">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="energyEfficient">12. Do you use energy-efficient (LED) light bulbs?</label>
+                            <select id="energyEfficient" name="energyEfficient" required>
+                                <option value="">Select...</option>
+                                <option value="all">Yes, in all fixtures</option>
+                                <option value="most">Yes, in most fixtures</option>
+                                <option value="some">Yes, in some fixtures</option>
+                                <option value="none">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Diet & Food Section -->
+                    <div class="calculator-section">
+                        <h3 class="section-label">🍽️ Diet & Food</h3>
+                        
+                        <div class="form-group">
+                            <label for="diet">13. Which best describes your diet?</label>
+                            <select id="diet" name="diet" required>
+                                <option value="">Select...</option>
+                                <option value="vegan">Vegan</option>
+                                <option value="vegetarian">Vegetarian</option>
+                                <option value="pescatarian">Pescatarian</option>
+                                <option value="low-meat">Omnivore (low meat consumption)</option>
+                                <option value="regular-meat">Omnivore (regular meat consumption)</option>
+                                <option value="high-meat">Omnivore (high meat consumption)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="localFood">14. How often do you buy local/seasonal food?</label>
+                            <select id="localFood" name="localFood" required>
+                                <option value="">Select...</option>
+                                <option value="always">Always</option>
+                                <option value="often">Often</option>
+                                <option value="sometimes">Sometimes</option>
+                                <option value="rarely">Rarely</option>
+                                <option value="never">Never</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="foodWaste">15. How much of your food goes to waste?</label>
+                            <select id="foodWaste" name="foodWaste" required>
+                                <option value="">Select...</option>
+                                <option value="none">Almost none (compost everything)</option>
+                                <option value="little">A little</option>
+                                <option value="moderate">A moderate amount</option>
+                                <option value="lot">A lot</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="organicFood">16. How often do you purchase organic food?</label>
+                            <select id="organicFood" name="organicFood" required>
+                                <option value="">Select...</option>
+                                <option value="always">Always</option>
+                                <option value="often">Often</option>
+                                <option value="sometimes">Sometimes</option>
+                                <option value="rarely">Rarely</option>
+                                <option value="never">Never</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Waste & Recycling Section -->
+                    <div class="calculator-section">
+                        <h3 class="section-label">♻️ Waste & Recycling</h3>
+                        
+                        <div class="form-group">
+                            <label for="recycling">17. Do you actively recycle?</label>
+                            <select id="recycling" name="recycling" required>
+                                <option value="">Select...</option>
+                                <option value="always">Yes, always</option>
+                                <option value="usually">Yes, usually</option>
+                                <option value="sometimes">Sometimes</option>
+                                <option value="rarely">Rarely</option>
+                                <option value="never">Never</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="composting">18. Do you compost organic waste?</label>
+                            <select id="composting" name="composting" required>
+                                <option value="">Select...</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="singleUsePlastic">19. How often do you use single-use plastics (bags, bottles, straws)?</label>
+                            <select id="singleUsePlastic" name="singleUsePlastic" required>
+                                <option value="">Select...</option>
+                                <option value="never">Never (I use reusables)</option>
+                                <option value="rarely">Rarely</option>
+                                <option value="sometimes">Sometimes</option>
+                                <option value="often">Often</option>
+                                <option value="always">Very often</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Shopping & Consumption Section -->
+                    <div class="calculator-section">
+                        <h3 class="section-label">🛍️ Shopping & Consumption</h3>
+                        
+                        <div class="form-group">
+                            <label for="newClothes">20. How often do you buy new clothes?</label>
+                            <select id="newClothes" name="newClothes" required>
+                                <option value="">Select...</option>
+                                <option value="rarely">Rarely (a few times a year)</option>
+                                <option value="occasionally">Occasionally (monthly)</option>
+                                <option value="often">Often (weekly)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="secondHand">21. Do you buy secondhand/thrifted items?</label>
+                            <select id="secondHand" name="secondHand" required>
+                                <option value="">Select...</option>
+                                <option value="always">Yes, almost always</option>
+                                <option value="often">Yes, often</option>
+                                <option value="sometimes">Sometimes</option>
+                                <option value="rarely">Rarely</option>
+                                <option value="never">Never</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="electronics">22. How often do you buy new electronics/gadgets?</label>
+                            <select id="electronics" name="electronics" required>
+                                <option value="">Select...</option>
+                                <option value="rarely">Rarely (only when necessary)</option>
+                                <option value="occasionally">Occasionally (every 1-2 years)</option>
+                                <option value="often">Often (multiple times a year)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="streaming">23. How many hours per day do you spend streaming video/gaming?</label>
+                            <input type="number" id="streaming" name="streaming" min="0" step="0.5" required placeholder="e.g., 2">
+                        </div>
+                    </div>
+
+                    <!-- Additional Habits Section -->
+                    <div class="calculator-section">
+                        <h3 class="section-label">🌱 Additional Habits</h3>
+                        
+                        <div class="form-group">
+                            <label for="waterUsage">24. How would you describe your water usage habits?</label>
+                            <select id="waterUsage" name="waterUsage" required>
+                                <option value="">Select...</option>
+                                <option value="low">Very conscious (short showers, turn off taps)</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="high">High (long showers, baths often)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="paperUsage">25. How much paper do you use (printing, paper towels, etc.)?</label>
+                            <select id="paperUsage" name="paperUsage" required>
+                                <option value="">Select...</option>
+                                <option value="minimal">Minimal (mostly digital)</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="high">High (print frequently)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-submit">Calculate My Carbon Footprint</button>
+                </form>
+
+                <!-- Results Section (hidden initially) -->
+                <div id="resultsSection" class="results-section" style="display: none;">
+                    <div class="results-container">
+                        <h2 style="color: var(--primary-color); text-align: center; margin-bottom: 2rem;">Your Carbon Footprint Results</h2>
+                        
+                        <div class="results-hero">
+                            <div class="result-card main-result">
+                                <div class="result-icon">🌍</div>
+                                <h3>Your Annual Carbon Footprint</h3>
+                                <div class="result-value" id="totalFootprint">0</div>
+                                <p class="result-unit">metric tons CO₂/year</p>
+                            </div>
+                        </div>
+
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <h4>🇺🇸 US Average</h4>
+                                <div class="comparison-value">16.0</div>
+                                <p>metric tons CO₂/year</p>
+                            </div>
+                            <div class="result-card">
+                                <h4>🌎 World Average</h4>
+                                <div class="comparison-value">4.0</div>
+                                <p>metric tons CO₂/year</p>
+                            </div>
+                            <div class="result-card">
+                                <h4>🎯 Target Goal</h4>
+                                <div class="comparison-value">2.0</div>
+                                <p>metric tons CO₂/year</p>
+                            </div>
+                        </div>
+
+                        <div class="breakdown-section">
+                            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Emissions Breakdown</h3>
+                            <div class="breakdown-grid">
+                                <div class="breakdown-item">
+                                    <div class="breakdown-label">🚗 Transportation</div>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" id="transportBar"></div>
+                                    </div>
+                                    <div class="breakdown-value" id="transportValue">0</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="breakdown-label">🏠 Home Energy</div>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" id="homeBar"></div>
+                                    </div>
+                                    <div class="breakdown-value" id="homeValue">0</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="breakdown-label">🍽️ Food</div>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" id="foodBar"></div>
+                                    </div>
+                                    <div class="breakdown-value" id="foodValue">0</div>
+                                </div>
+                                <div class="breakdown-item">
+                                    <div class="breakdown-label">🛍️ Consumption</div>
+                                    <div class="breakdown-bar">
+                                        <div class="breakdown-fill" id="consumptionBar"></div>
+                                    </div>
+                                    <div class="breakdown-value" id="consumptionValue">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tips-section">
+                            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Ways to Reduce Your Impact</h3>
+                            <div id="tipsContainer" class="tips-grid"></div>
+                        </div>
+
+                        <div class="co2-cloud-section">
+                            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Check Portland's Current CO₂ Levels</h3>
+                            <p style="margin-bottom: 1rem;">Want to see real-time CO₂ measurements in Portland? Check out this live monitoring tool:</p>
+                            <a href="https://co2-cloud.web.app/" target="_blank" class="btn btn-primary" style="display: inline-block;">
+                                View Portland CO₂ Levels
+                            </a>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 2rem;">
+                            <button id="retakeButton" class="btn btn-secondary">Retake Calculator</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Climate Action Team. Making Portland Greener, One Action at a Time.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="carbon-calculator.js"></script>
+</body>
+</html>
