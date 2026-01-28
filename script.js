@@ -23,37 +23,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form handling
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
-        const photoOption = document.getElementById('photoOption');
-        const codeOption = document.getElementById('codeOption');
-        const photoUploadGroup = document.getElementById('photoUploadGroup');
         const accessCodeGroup = document.getElementById('accessCodeGroup');
-        const eventPhoto = document.getElementById('eventPhoto');
-        const fileName = document.getElementById('fileName');
         const errorMessage = document.getElementById('errorMessage');
         const successMessage = document.getElementById('successMessage');
-
-        // Handle verification type toggle
-        photoOption.addEventListener('change', function() {
-            photoUploadGroup.style.display = 'block';
-            accessCodeGroup.style.display = 'none';
-            document.getElementById('accessCode').value = '';
-        });
-
-        codeOption.addEventListener('change', function() {
-            photoUploadGroup.style.display = 'none';
-            accessCodeGroup.style.display = 'block';
-            eventPhoto.value = '';
-            fileName.textContent = 'No file chosen';
-        });
-
-        // Handle file upload
-        eventPhoto.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                fileName.textContent = this.files[0].name;
-            } else {
-                fileName.textContent = 'No file chosen';
-            }
-        });
 
         // Handle form submission
         signupForm.addEventListener('submit', function(e) {
@@ -78,23 +50,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Check verification
-            if (verificationType === 'photo') {
-                if (!eventPhoto.files || !eventPhoto.files[0]) {
-                    showError('Please upload a photo of yourself at a February or March event.');
-                    return;
-                }
-            } else {
-                const accessCode = document.getElementById('accessCode').value.trim();
-                if (!accessCode) {
-                    showError('Please enter your access code.');
-                    return;
-                }
+            const accessCode = document.getElementById('accessCode').value.trim();
+            if (!accessCode) {
+                showError('Please enter your access code.');
+                return;
             }
 
             // Success - In production, this would submit to a backend
             showSuccess('Registration successful! We look forward to seeing you on March 18th. Check your email for confirmation details.');
             signupForm.reset();
-            fileName.textContent = 'No file chosen';
         });
 
         function validateEmail(email) {

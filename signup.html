@@ -67,43 +67,20 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="section-label">Verification * (Choose one option below)</label>
-                        <p class="form-help">To sign up, either upload a photo of yourself participating in our February or March events, or enter your access code.</p>
+                        <label class="section-label">Verification * (Enter your access code)</label>
+                        <p class="form-help">Enter your access code to sign up for the event.</p>
                     </div>
 
                     <div class="verification-options">
                         <div class="verification-option">
-                            <input type="radio" id="photoOption" name="verificationType" value="photo" checked>
-                            <label for="photoOption" class="radio-label">
-                                <span class="radio-title">Upload Event Photo</span>
-                                <span class="radio-description">Photo of you at a February or March event</span>
-                            </label>
-                        </div>
-
-                        <div class="form-group" id="photoUploadGroup">
-                            <label for="eventPhoto" class="upload-label">
-                                <span class="upload-icon">📸</span>
-                                <span class="upload-text">
-                                    <strong>Choose Photo</strong>
-                                    <span class="file-name" id="fileName">No file chosen</span>
-                                </span>
-                            </label>
-                            <input type="file" id="eventPhoto" name="eventPhoto" accept="image/*" class="file-input">
-                        </div>
-
-                        <div class="divider">
-                            <span>OR</span>
-                        </div>
-
-                        <div class="verification-option">
-                            <input type="radio" id="codeOption" name="verificationType" value="code">
+                            <input type="radio" id="codeOption" name="verificationType" value="code" checked>
                             <label for="codeOption" class="radio-label">
                                 <span class="radio-title">Enter Access Code</span>
                                 <span class="radio-description">If you have a special access code</span>
                             </label>
                         </div>
 
-                        <div class="form-group" id="accessCodeGroup" style="display: none;">
+                        <div class="form-group" id="accessCodeGroup">
                             <label for="accessCode">Access Code</label>
                             <input type="text" id="accessCode" name="accessCode" placeholder="Enter your access code">
                         </div>

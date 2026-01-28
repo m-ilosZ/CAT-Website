@@ -653,51 +653,10 @@ body {
     font-size: 0.9rem;
 }
 
-.upload-label {
-    display: block;
-    padding: 2rem;
-    border: 3px dashed var(--border-color);
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-}
 
-.upload-label:hover {
-    border-color: var(--primary-color);
-    background: rgba(45, 106, 79, 0.05);
-}
-
-.upload-icon {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 1rem;
-}
-
-.upload-text {
-    display: block;
-}
-
-.upload-text strong {
-    display: block;
-    color: var(--primary-color);
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-.file-name {
-    color: var(--text-light);
-    font-size: 0.9rem;
-}
-
-.file-input {
-    display: none;
-}
 
 .divider {
-    text-align: center;
-    margin: 2rem 0;
-    position: relative;
+    display: none;
 }
 
 .divider::before {
