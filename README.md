@@ -10,7 +10,7 @@ The Climate Action Team (CAT) is dedicated to environmental education and commun
 
 - **Home Page**: Overview of CAT's mission and upcoming events
 - **About Us Page**: Animated timeline showcasing our 2026 monthly programs
-- **Community Night Sign-Up**: Registration form for our March 18th event with photo upload or access code verification
+- **Community Night Sign-Up**: Registration form for our March 18th event 
 
 ## Live Website
 
@@ -29,7 +29,7 @@ Then open your browser to `http://localhost:8000`
 ## Technologies
 
 - HTML5
-- CSS3 (with animations and responsive design)
+- CSS3 
 - Vanilla JavaScript
 - GitHub Pages for hosting
 
