@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form handling
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
-        const accessCodeGroup = document.getElementById('accessCodeGroup');
         const errorMessage = document.getElementById('errorMessage');
         const successMessage = document.getElementById('successMessage');
 
@@ -46,13 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (!validateEmail(email)) {
                 showError('Please enter a valid email address.');
-                return;
-            }
-
-            // Check verification
-            const accessCode = document.getElementById('accessCode').value.trim();
-            if (!accessCode) {
-                showError('Please enter your access code.');
                 return;
             }
 
