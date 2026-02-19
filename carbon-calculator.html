@@ -23,8 +23,8 @@
         </div>
     </nav>
 
-    <!-- Animated Hero -->
-    <section class="calc-hero">
+    <!-- Hero splash shown before quiz starts -->
+    <section class="calc-hero" id="calcHero">
         <div class="calc-particles">
             <span class="particle p1"></span>
             <span class="particle p2"></span>
@@ -37,561 +37,181 @@
             <div class="calc-hero-inner">
                 <div class="calc-earth-icon">🌍</div>
                 <h1>Carbon Footprint Calculator</h1>
-                <p>Discover your environmental impact with our comprehensive 32-question assessment. Get personalized insights and actionable tips to live more sustainably.</p>
+                <p>Answer 32 questions across 5 categories to discover your personal environmental impact and get tailored tips to live more sustainably.</p>
                 <div class="calc-hero-badges">
-                    <span class="hero-badge">⏱️ 5 minutes</span>
+                    <span class="hero-badge">⏱️ About 5 minutes</span>
                     <span class="hero-badge">📊 32 questions</span>
-                    <span class="hero-badge">🎯 Personalized tips</span>
+                    <span class="hero-badge">🎯 Personalised results</span>
                 </div>
+                <button class="btn btn-hero" id="startQuizBtn">Start Quiz →</button>
             </div>
         </div>
     </section>
 
-    <section class="form-section">
-        <div class="container">
-            <div id="calculatorContainer">
+    <!-- One-question-at-a-time quiz shell (hidden until Start is clicked) -->
+    <section class="quiz-shell" id="quizShell" style="display:none">
+        <div class="quiz-wrap">
 
-                <!-- Step Progress -->
-                <div class="wizard-progress" id="wizardProgress">
-                    <div class="step-indicators">
-                        <div class="step-ind active" data-step="1">
-                            <div class="step-bubble">🚗</div>
-                            <span>Transport</span>
-                        </div>
-                        <div class="step-line"></div>
-                        <div class="step-ind" data-step="2">
-                            <div class="step-bubble">🏠</div>
-                            <span>Home</span>
-                        </div>
-                        <div class="step-line"></div>
-                        <div class="step-ind" data-step="3">
-                            <div class="step-bubble">🍽️</div>
-                            <span>Food</span>
-                        </div>
-                        <div class="step-line"></div>
-                        <div class="step-ind" data-step="4">
-                            <div class="step-bubble">♻️</div>
-                            <span>Waste</span>
-                        </div>
-                        <div class="step-line"></div>
-                        <div class="step-ind" data-step="5">
-                            <div class="step-bubble">🛍️</div>
-                            <span>Lifestyle</span>
-                        </div>
+            <!-- Top bar: category pills + live counter -->
+            <div class="quiz-topbar">
+                <div class="quiz-cats" id="quizCats">
+                    <div class="cat-pill active" data-cat="transport"><span>🚗</span><span class="cat-pill-label">Transport</span></div>
+                    <div class="cat-pill" data-cat="home"><span>🏠</span><span class="cat-pill-label">Home</span></div>
+                    <div class="cat-pill" data-cat="food"><span>🍽️</span><span class="cat-pill-label">Food</span></div>
+                    <div class="cat-pill" data-cat="waste"><span>♻️</span><span class="cat-pill-label">Waste</span></div>
+                    <div class="cat-pill" data-cat="lifestyle"><span>🛍️</span><span class="cat-pill-label">Lifestyle</span></div>
+                </div>
+                <div class="live-counter" id="liveCounter" style="opacity:0">
+                    <div class="live-counter-label">Est. footprint</div>
+                    <div class="live-counter-value"><span id="liveVal">–</span><span class="live-unit"> t CO₂/yr</span></div>
+                </div>
+            </div>
+
+            <!-- Slim progress bar -->
+            <div class="quiz-prog-track">
+                <div class="quiz-prog-fill" id="quizProgFill" style="width:3%"></div>
+            </div>
+
+            <!-- Step label -->
+            <div class="quiz-step-row">
+                <span class="quiz-step-label" id="quizStepLabel">1 / 32</span>
+            </div>
+
+            <!-- Dynamic question area -->
+            <div class="question-area" id="questionArea"></div>
+
+            <!-- Back button -->
+            <div class="quiz-back-row">
+                <button class="btn-quiz-back" id="quizBackBtn" style="visibility:hidden">← Back</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Results section (hidden until quiz is complete) -->
+    <section class="results-shell" id="resultsShell" style="display:none">
+        <div class="container">
+            <div class="results-container">
+
+                <div class="results-header">
+                    <div class="result-earth" id="resultEarth">🌍</div>
+                    <h2>Your Carbon Footprint</h2>
+                    <div class="result-total-wrap">
+                        <div class="result-total-number" id="totalFootprint">0</div>
+                        <div class="result-total-unit">metric tons CO₂ / year</div>
                     </div>
-                    <div class="wizard-progress-bar">
-                        <div class="wizard-progress-fill" id="progressFill" style="width: 20%"></div>
+                    <div class="result-rating-badge" id="resultRating"></div>
+                </div>
+
+                <!-- Visual gauge -->
+                <div class="comparison-section">
+                    <h3>How You Compare</h3>
+                    <div class="comparison-gauge">
+                        <div class="gauge-scale-labels">
+                            <span>0</span><span>5</span><span>10</span><span>15</span><span>20+</span>
+                        </div>
+                        <div class="gauge-track">
+                            <div class="gauge-zone green"  style="width:10%"></div>
+                            <div class="gauge-zone yellow" style="width:15%"></div>
+                            <div class="gauge-zone orange" style="width:25%"></div>
+                            <div class="gauge-zone red"    style="width:50%"></div>
+                            <div class="gauge-marker" id="gaugeMarker" style="left:0%">
+                                <div class="gauge-arrow">▼</div>
+                                <div class="gauge-marker-label">You</div>
+                            </div>
+                        </div>
+                        <div class="gauge-legend">
+                            <span class="legend-item green">🎯 Target: 2t</span>
+                            <span class="legend-item blue">🌎 World avg: 4t</span>
+                            <span class="legend-item orange">🇺🇸 US avg: 16t</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Wizard Form -->
-                <form id="carbonCalculatorForm">
+                <!-- Comparison cards -->
+                <div class="comparison-cards-grid">
+                    <div class="comparison-card">
+                        <div class="comp-icon">🎯</div>
+                        <div class="comp-label">Target Goal</div>
+                        <div class="comp-value">2.0 <span>tons</span></div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comp-icon">🌎</div>
+                        <div class="comp-label">World Average</div>
+                        <div class="comp-value">4.0 <span>tons</span></div>
+                    </div>
+                    <div class="comparison-card highlight-card-result">
+                        <div class="comp-icon">👤</div>
+                        <div class="comp-label">Your Footprint</div>
+                        <div class="comp-value" id="userCompValue">– <span>tons</span></div>
+                    </div>
+                    <div class="comparison-card">
+                        <div class="comp-icon">🇺🇸</div>
+                        <div class="comp-label">US Average</div>
+                        <div class="comp-value">16.0 <span>tons</span></div>
+                    </div>
+                </div>
 
-                    <!-- STEP 1: TRANSPORTATION -->
-                    <div class="wizard-panel active" id="panel-1">
-                        <div class="panel-header">
-                            <span class="panel-emoji">🚗</span>
-                            <h2>Transportation</h2>
-                            <p>How you get around accounts for a major portion of most people's carbon footprint.</p>
+                <!-- Breakdown bars -->
+                <div class="breakdown-section">
+                    <h3>Emissions Breakdown</h3>
+                    <div class="breakdown-grid">
+                        <div class="breakdown-item">
+                            <div class="breakdown-label">🚗 Transportation</div>
+                            <div class="breakdown-bar-wrap">
+                                <div class="breakdown-bar-bg">
+                                    <div class="breakdown-bar-fill" id="transportBar" style="width:0%"></div>
+                                </div>
+                                <div class="breakdown-value" id="transportValue">0</div>
+                            </div>
                         </div>
-                        <div class="questions-wrap">
-
-                            <div class="question-card">
-                                <label>What is your primary mode of commuting?</label>
-                                <div class="option-grid cols-4">
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="car-alone"><span class="opt-icon">🚗</span>Drive Alone</button>
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="car-carpool"><span class="opt-icon">🚌</span>Carpool</button>
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="electric-car"><span class="opt-icon">⚡</span>Electric Car</button>
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="public-transit"><span class="opt-icon">🚇</span>Public Transit</button>
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="motorcycle"><span class="opt-icon">🏍️</span>Motorcycle</button>
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="bike"><span class="opt-icon">🚲</span>Bike</button>
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="walk"><span class="opt-icon">🚶</span>Walk</button>
-                                    <button type="button" class="option-btn" data-target="commuteMode" data-value="remote"><span class="opt-icon">💻</span>Work from Home</button>
+                        <div class="breakdown-item">
+                            <div class="breakdown-label">🏠 Home Energy</div>
+                            <div class="breakdown-bar-wrap">
+                                <div class="breakdown-bar-bg">
+                                    <div class="breakdown-bar-fill" id="homeBar" style="width:0%"></div>
                                 </div>
-                                <input type="hidden" id="commuteMode" name="commuteMode">
+                                <div class="breakdown-value" id="homeValue">0</div>
                             </div>
-
-                            <div class="question-card">
-                                <label for="commuteDistance">Average one-way commute distance (miles)</label>
-                                <input type="number" id="commuteDistance" name="commuteDistance" min="0" step="0.1" placeholder="e.g., 10" class="calc-input">
-                                <p class="field-hint">Enter 0 if you work from home.</p>
-                            </div>
-
-                            <div class="question-card">
-                                <label for="carMileage">Your vehicle's fuel efficiency (MPG)</label>
-                                <input type="number" id="carMileage" name="carMileage" min="1" step="1" placeholder="e.g., 28" class="calc-input">
-                                <p class="field-hint">Leave blank if you don't drive. US average is ~28 MPG.</p>
-                            </div>
-
-                            <div class="question-card">
-                                <label>How many vehicles does your household own?</label>
-                                <div class="option-grid cols-4">
-                                    <button type="button" class="option-btn" data-target="numVehicles" data-value="0"><span class="opt-icon">🚫</span>None</button>
-                                    <button type="button" class="option-btn" data-target="numVehicles" data-value="1"><span class="opt-icon">1️⃣</span>One</button>
-                                    <button type="button" class="option-btn" data-target="numVehicles" data-value="2"><span class="opt-icon">2️⃣</span>Two</button>
-                                    <button type="button" class="option-btn" data-target="numVehicles" data-value="3"><span class="opt-icon">3️⃣</span>Three+</button>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-label">🍽️ Food &amp; Diet</div>
+                            <div class="breakdown-bar-wrap">
+                                <div class="breakdown-bar-bg">
+                                    <div class="breakdown-bar-fill" id="foodBar" style="width:0%"></div>
                                 </div>
-                                <input type="hidden" id="numVehicles" name="numVehicles" value="1">
+                                <div class="breakdown-value" id="foodValue">0</div>
                             </div>
-
-                            <div class="question-card">
-                                <label for="weekendDriving">Recreational / weekend driving per week (miles)</label>
-                                <input type="number" id="weekendDriving" name="weekendDriving" min="0" step="1" placeholder="e.g., 30" class="calc-input" value="0">
-                                <p class="field-hint">Errands, road trips, visiting friends, etc.</p>
-                            </div>
-
-                            <div class="question-card">
-                                <label>How many flights do you take per year?</label>
-                                <div class="flights-grid">
-                                    <div class="flights-item">
-                                        <span class="flights-label">✈️ Short-haul <small>(under 3 hours)</small></span>
-                                        <input type="number" id="flightShort" name="flightShort" min="0" placeholder="0" class="calc-input small" value="0">
-                                    </div>
-                                    <div class="flights-item">
-                                        <span class="flights-label">✈️ Long-haul <small>(over 3 hours)</small></span>
-                                        <input type="number" id="flightLong" name="flightLong" min="0" placeholder="0" class="calc-input small" value="0">
-                                    </div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-label">🛍️ Lifestyle</div>
+                            <div class="breakdown-bar-wrap">
+                                <div class="breakdown-bar-bg">
+                                    <div class="breakdown-bar-fill" id="consumptionBar" style="width:0%"></div>
                                 </div>
+                                <div class="breakdown-value" id="consumptionValue">0</div>
                             </div>
-
                         </div>
                     </div>
+                </div>
 
-                    <!-- STEP 2: HOME ENERGY -->
-                    <div class="wizard-panel" id="panel-2">
-                        <div class="panel-header">
-                            <span class="panel-emoji">🏠</span>
-                            <h2>Home Energy</h2>
-                            <p>Your home's energy use is often the largest contributor to your personal carbon footprint.</p>
-                        </div>
-                        <div class="questions-wrap">
+                <!-- Tips -->
+                <div class="tips-section">
+                    <h3>🌱 Personalised Ways to Reduce Your Impact</h3>
+                    <div id="tipsContainer" class="tips-grid"></div>
+                </div>
 
-                            <div class="question-card">
-                                <label>What size is your home?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn tall" data-target="homeSize" data-value="small"><span class="opt-icon">🏡</span><strong>Small</strong><br><small>Under 1,000 sq ft</small></button>
-                                    <button type="button" class="option-btn tall" data-target="homeSize" data-value="medium"><span class="opt-icon">🏠</span><strong>Medium</strong><br><small>1,000–2,000 sq ft</small></button>
-                                    <button type="button" class="option-btn tall" data-target="homeSize" data-value="large"><span class="opt-icon">🏰</span><strong>Large</strong><br><small>Over 2,000 sq ft</small></button>
-                                </div>
-                                <input type="hidden" id="homeSize" name="homeSize">
-                            </div>
+                <!-- CO2 Cloud -->
+                <div class="co2-cloud-section">
+                    <h3>🌫️ Portland's Current CO₂ Levels</h3>
+                    <p>Want to see real-time CO₂ measurements in Portland? Check out this live monitoring tool:</p>
+                    <a href="https://co2-cloud.web.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                        View Portland CO₂ Levels →
+                    </a>
+                </div>
 
-                            <div class="question-card">
-                                <label for="householdSize">How many people live in your household?</label>
-                                <input type="number" id="householdSize" name="householdSize" min="1" max="15" placeholder="e.g., 3" class="calc-input">
-                            </div>
-
-                            <div class="question-card">
-                                <label>What is your primary heating source?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="heating" data-value="natural-gas"><span class="opt-icon">🔥</span>Natural Gas</button>
-                                    <button type="button" class="option-btn" data-target="heating" data-value="electric"><span class="opt-icon">⚡</span>Electric Heat</button>
-                                    <button type="button" class="option-btn" data-target="heating" data-value="oil"><span class="opt-icon">🛢️</span>Heating Oil</button>
-                                    <button type="button" class="option-btn" data-target="heating" data-value="heat-pump"><span class="opt-icon">💨</span>Heat Pump</button>
-                                    <button type="button" class="option-btn" data-target="heating" data-value="other"><span class="opt-icon">🌿</span>Other / None</button>
-                                </div>
-                                <input type="hidden" id="heating" name="heating">
-                            </div>
-
-                            <div class="question-card">
-                                <label>Do you have air conditioning?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="airConditioning" data-value="none"><span class="opt-icon">❌</span>No AC</button>
-                                    <button type="button" class="option-btn" data-target="airConditioning" data-value="window"><span class="opt-icon">🪟</span>Window Unit</button>
-                                    <button type="button" class="option-btn" data-target="airConditioning" data-value="central"><span class="opt-icon">🌬️</span>Central AC</button>
-                                </div>
-                                <input type="hidden" id="airConditioning" name="airConditioning" value="none">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How well insulated is your home?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn tall" data-target="homeInsulation" data-value="well"><span class="opt-icon">🏆</span><strong>Well Insulated</strong><br><small>New or recently renovated</small></button>
-                                    <button type="button" class="option-btn tall" data-target="homeInsulation" data-value="average"><span class="opt-icon">🏠</span><strong>Average</strong><br><small>Standard home</small></button>
-                                    <button type="button" class="option-btn tall" data-target="homeInsulation" data-value="poor"><span class="opt-icon">🥶</span><strong>Poorly Insulated</strong><br><small>Drafty or old</small></button>
-                                </div>
-                                <input type="hidden" id="homeInsulation" name="homeInsulation" value="average">
-                            </div>
-
-                            <div class="question-card">
-                                <label>What type of water heater do you have?</label>
-                                <div class="option-grid cols-4">
-                                    <button type="button" class="option-btn" data-target="hotWater" data-value="gas"><span class="opt-icon">🔥</span>Gas</button>
-                                    <button type="button" class="option-btn" data-target="hotWater" data-value="electric"><span class="opt-icon">⚡</span>Electric</button>
-                                    <button type="button" class="option-btn" data-target="hotWater" data-value="heat-pump"><span class="opt-icon">💧</span>Heat Pump</button>
-                                    <button type="button" class="option-btn" data-target="hotWater" data-value="solar"><span class="opt-icon">☀️</span>Solar</button>
-                                </div>
-                                <input type="hidden" id="hotWater" name="hotWater" value="gas">
-                            </div>
-
-                            <div class="question-card">
-                                <label>Does your home have solar panels?</label>
-                                <div class="option-grid cols-2">
-                                    <button type="button" class="option-btn" data-target="solarPanels" data-value="yes"><span class="opt-icon">☀️</span>Yes</button>
-                                    <button type="button" class="option-btn" data-target="solarPanels" data-value="no"><span class="opt-icon">❌</span>No</button>
-                                </div>
-                                <input type="hidden" id="solarPanels" name="solarPanels">
-                            </div>
-
-                            <div class="question-card">
-                                <label>Do you purchase renewable/green energy from your utility?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="greenEnergy" data-value="yes"><span class="opt-icon">🌿</span>Yes, 100%</button>
-                                    <button type="button" class="option-btn" data-target="greenEnergy" data-value="partial"><span class="opt-icon">⚡</span>Partially</button>
-                                    <button type="button" class="option-btn" data-target="greenEnergy" data-value="no"><span class="opt-icon">❌</span>No</button>
-                                </div>
-                                <input type="hidden" id="greenEnergy" name="greenEnergy">
-                            </div>
-
-                            <div class="question-card">
-                                <label for="thermostat">Winter thermostat setting (°F)</label>
-                                <input type="number" id="thermostat" name="thermostat" min="50" max="80" placeholder="e.g., 68" class="calc-input">
-                                <p class="field-hint">US average is 68°F. Each degree lower saves ~3% heating energy.</p>
-                            </div>
-
-                            <div class="question-card">
-                                <label>Do you use energy-efficient (LED) light bulbs?</label>
-                                <div class="option-grid cols-4">
-                                    <button type="button" class="option-btn" data-target="energyEfficient" data-value="all"><span class="opt-icon">💡</span>All fixtures</button>
-                                    <button type="button" class="option-btn" data-target="energyEfficient" data-value="most"><span class="opt-icon">💡</span>Most fixtures</button>
-                                    <button type="button" class="option-btn" data-target="energyEfficient" data-value="some"><span class="opt-icon">💡</span>Some fixtures</button>
-                                    <button type="button" class="option-btn" data-target="energyEfficient" data-value="none"><span class="opt-icon">🕯️</span>None</button>
-                                </div>
-                                <input type="hidden" id="energyEfficient" name="energyEfficient">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- STEP 3: FOOD -->
-                    <div class="wizard-panel" id="panel-3">
-                        <div class="panel-header">
-                            <span class="panel-emoji">🍽️</span>
-                            <h2>Diet &amp; Food</h2>
-                            <p>Food choices — especially meat and dairy — have a significant climate impact.</p>
-                        </div>
-                        <div class="questions-wrap">
-
-                            <div class="question-card">
-                                <label>Which best describes your diet?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="diet" data-value="vegan"><span class="opt-icon">🌱</span>Vegan</button>
-                                    <button type="button" class="option-btn" data-target="diet" data-value="vegetarian"><span class="opt-icon">🥦</span>Vegetarian</button>
-                                    <button type="button" class="option-btn" data-target="diet" data-value="pescatarian"><span class="opt-icon">🐟</span>Pescatarian</button>
-                                    <button type="button" class="option-btn" data-target="diet" data-value="low-meat"><span class="opt-icon">🥗</span>Low Meat</button>
-                                    <button type="button" class="option-btn" data-target="diet" data-value="regular-meat"><span class="opt-icon">🍖</span>Regular Meat</button>
-                                    <button type="button" class="option-btn" data-target="diet" data-value="high-meat"><span class="opt-icon">🥩</span>High Meat</button>
-                                </div>
-                                <input type="hidden" id="diet" name="diet">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How often do you eat beef or lamb?</label>
-                                <div class="option-grid cols-4">
-                                    <button type="button" class="option-btn" data-target="beefFrequency" data-value="daily"><span class="opt-icon">🥩</span>Daily</button>
-                                    <button type="button" class="option-btn" data-target="beefFrequency" data-value="weekly"><span class="opt-icon">🍖</span>A few times/week</button>
-                                    <button type="button" class="option-btn" data-target="beefFrequency" data-value="monthly"><span class="opt-icon">🥗</span>Monthly or less</button>
-                                    <button type="button" class="option-btn" data-target="beefFrequency" data-value="never"><span class="opt-icon">🌱</span>Never</button>
-                                </div>
-                                <input type="hidden" id="beefFrequency" name="beefFrequency" value="weekly">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How much dairy do you consume (milk, cheese, yogurt)?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="dairyConsumption" data-value="high"><span class="opt-icon">🥛</span>A lot</button>
-                                    <button type="button" class="option-btn" data-target="dairyConsumption" data-value="moderate"><span class="opt-icon">🧀</span>Moderate</button>
-                                    <button type="button" class="option-btn" data-target="dairyConsumption" data-value="low"><span class="opt-icon">🌿</span>Little / None</button>
-                                </div>
-                                <input type="hidden" id="dairyConsumption" name="dairyConsumption" value="moderate">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How often do you buy local or seasonal food?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="localFood" data-value="always"><span class="opt-icon">🌾</span>Always</button>
-                                    <button type="button" class="option-btn" data-target="localFood" data-value="often"><span class="opt-icon">🥕</span>Often</button>
-                                    <button type="button" class="option-btn" data-target="localFood" data-value="sometimes"><span class="opt-icon">🛒</span>Sometimes</button>
-                                    <button type="button" class="option-btn" data-target="localFood" data-value="rarely"><span class="opt-icon">❓</span>Rarely</button>
-                                    <button type="button" class="option-btn" data-target="localFood" data-value="never"><span class="opt-icon">🚫</span>Never</button>
-                                </div>
-                                <input type="hidden" id="localFood" name="localFood">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How much of your food goes to waste?</label>
-                                <div class="option-grid cols-4">
-                                    <button type="button" class="option-btn" data-target="foodWaste" data-value="none"><span class="opt-icon">♻️</span>Almost none</button>
-                                    <button type="button" class="option-btn" data-target="foodWaste" data-value="little"><span class="opt-icon">🥦</span>A little</button>
-                                    <button type="button" class="option-btn" data-target="foodWaste" data-value="moderate"><span class="opt-icon">🗑️</span>Moderate</button>
-                                    <button type="button" class="option-btn" data-target="foodWaste" data-value="lot"><span class="opt-icon">😔</span>A lot</button>
-                                </div>
-                                <input type="hidden" id="foodWaste" name="foodWaste">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How often do you purchase organic food?</label>
-                                <div class="option-grid cols-4">
-                                    <button type="button" class="option-btn" data-target="organicFood" data-value="always"><span class="opt-icon">🌿</span>Always</button>
-                                    <button type="button" class="option-btn" data-target="organicFood" data-value="often"><span class="opt-icon">🥦</span>Often</button>
-                                    <button type="button" class="option-btn" data-target="organicFood" data-value="sometimes"><span class="opt-icon">🛒</span>Sometimes</button>
-                                    <button type="button" class="option-btn" data-target="organicFood" data-value="rarely"><span class="opt-icon">❌</span>Rarely / Never</button>
-                                </div>
-                                <input type="hidden" id="organicFood" name="organicFood">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- STEP 4: WASTE & RECYCLING -->
-                    <div class="wizard-panel" id="panel-4">
-                        <div class="panel-header">
-                            <span class="panel-emoji">♻️</span>
-                            <h2>Waste &amp; Recycling</h2>
-                            <p>Reducing waste is one of the most direct ways to lower your environmental impact.</p>
-                        </div>
-                        <div class="questions-wrap">
-
-                            <div class="question-card">
-                                <label>How actively do you recycle?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="recycling" data-value="always"><span class="opt-icon">♻️</span>Always</button>
-                                    <button type="button" class="option-btn" data-target="recycling" data-value="usually"><span class="opt-icon">✅</span>Usually</button>
-                                    <button type="button" class="option-btn" data-target="recycling" data-value="sometimes"><span class="opt-icon">🤔</span>Sometimes</button>
-                                    <button type="button" class="option-btn" data-target="recycling" data-value="rarely"><span class="opt-icon">❌</span>Rarely</button>
-                                    <button type="button" class="option-btn" data-target="recycling" data-value="never"><span class="opt-icon">🚫</span>Never</button>
-                                </div>
-                                <input type="hidden" id="recycling" name="recycling">
-                            </div>
-
-                            <div class="question-card">
-                                <label>Do you compost organic waste?</label>
-                                <div class="option-grid cols-2">
-                                    <button type="button" class="option-btn" data-target="composting" data-value="yes"><span class="opt-icon">🌱</span>Yes</button>
-                                    <button type="button" class="option-btn" data-target="composting" data-value="no"><span class="opt-icon">❌</span>No</button>
-                                </div>
-                                <input type="hidden" id="composting" name="composting">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How often do you use single-use plastics (bags, bottles, straws)?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="singleUsePlastic" data-value="never"><span class="opt-icon">♻️</span>Never<br><small>I use reusables</small></button>
-                                    <button type="button" class="option-btn" data-target="singleUsePlastic" data-value="rarely"><span class="opt-icon">🌿</span>Rarely</button>
-                                    <button type="button" class="option-btn" data-target="singleUsePlastic" data-value="sometimes"><span class="opt-icon">🤔</span>Sometimes</button>
-                                    <button type="button" class="option-btn" data-target="singleUsePlastic" data-value="often"><span class="opt-icon">🛍️</span>Often</button>
-                                    <button type="button" class="option-btn" data-target="singleUsePlastic" data-value="always"><span class="opt-icon">🚫</span>Very Often</button>
-                                </div>
-                                <input type="hidden" id="singleUsePlastic" name="singleUsePlastic">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- STEP 5: LIFESTYLE & CONSUMPTION -->
-                    <div class="wizard-panel" id="panel-5">
-                        <div class="panel-header">
-                            <span class="panel-emoji">🛍️</span>
-                            <h2>Lifestyle &amp; Consumption</h2>
-                            <p>What and how much we buy significantly contributes to our overall footprint.</p>
-                        </div>
-                        <div class="questions-wrap">
-
-                            <div class="question-card">
-                                <label>How often do you buy new clothes?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn tall" data-target="newClothes" data-value="rarely"><span class="opt-icon">👍</span><strong>Rarely</strong><br><small>A few times/year</small></button>
-                                    <button type="button" class="option-btn tall" data-target="newClothes" data-value="occasionally"><span class="opt-icon">🛍️</span><strong>Occasionally</strong><br><small>Monthly</small></button>
-                                    <button type="button" class="option-btn tall" data-target="newClothes" data-value="often"><span class="opt-icon">👗</span><strong>Often</strong><br><small>Weekly</small></button>
-                                </div>
-                                <input type="hidden" id="newClothes" name="newClothes">
-                            </div>
-
-                            <div class="question-card">
-                                <label>Do you buy secondhand or thrifted items?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn" data-target="secondHand" data-value="always"><span class="opt-icon">🏆</span>Almost Always</button>
-                                    <button type="button" class="option-btn" data-target="secondHand" data-value="often"><span class="opt-icon">✅</span>Often</button>
-                                    <button type="button" class="option-btn" data-target="secondHand" data-value="sometimes"><span class="opt-icon">🤔</span>Sometimes</button>
-                                    <button type="button" class="option-btn" data-target="secondHand" data-value="rarely"><span class="opt-icon">❌</span>Rarely</button>
-                                    <button type="button" class="option-btn" data-target="secondHand" data-value="never"><span class="opt-icon">🚫</span>Never</button>
-                                </div>
-                                <input type="hidden" id="secondHand" name="secondHand">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How often do you buy new electronics or gadgets?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn tall" data-target="electronics" data-value="rarely"><span class="opt-icon">♻️</span><strong>Rarely</strong><br><small>Only when needed</small></button>
-                                    <button type="button" class="option-btn tall" data-target="electronics" data-value="occasionally"><span class="opt-icon">📱</span><strong>Occasionally</strong><br><small>Every 1–2 years</small></button>
-                                    <button type="button" class="option-btn tall" data-target="electronics" data-value="often"><span class="opt-icon">💻</span><strong>Often</strong><br><small>Multiple per year</small></button>
-                                </div>
-                                <input type="hidden" id="electronics" name="electronics">
-                            </div>
-
-                            <div class="question-card">
-                                <label for="streaming">Hours per day spent streaming video or gaming</label>
-                                <input type="number" id="streaming" name="streaming" min="0" max="24" step="0.5" placeholder="e.g., 2" class="calc-input" value="2">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How would you describe your water usage habits?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn tall" data-target="waterUsage" data-value="low"><span class="opt-icon">💧</span><strong>Very Conscious</strong><br><small>Short showers, taps off</small></button>
-                                    <button type="button" class="option-btn tall" data-target="waterUsage" data-value="moderate"><span class="opt-icon">🚿</span><strong>Moderate</strong></button>
-                                    <button type="button" class="option-btn tall" data-target="waterUsage" data-value="high"><span class="opt-icon">🛁</span><strong>High</strong><br><small>Long showers / baths</small></button>
-                                </div>
-                                <input type="hidden" id="waterUsage" name="waterUsage">
-                            </div>
-
-                            <div class="question-card">
-                                <label>How much paper do you use (printing, paper towels, etc.)?</label>
-                                <div class="option-grid cols-3">
-                                    <button type="button" class="option-btn tall" data-target="paperUsage" data-value="minimal"><span class="opt-icon">📱</span><strong>Minimal</strong><br><small>Mostly digital</small></button>
-                                    <button type="button" class="option-btn tall" data-target="paperUsage" data-value="moderate"><span class="opt-icon">📄</span><strong>Moderate</strong></button>
-                                    <button type="button" class="option-btn tall" data-target="paperUsage" data-value="high"><span class="opt-icon">📋</span><strong>High</strong><br><small>Print often</small></button>
-                                </div>
-                                <input type="hidden" id="paperUsage" name="paperUsage">
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <!-- Navigation Buttons -->
-                    <div class="wizard-nav">
-                        <button type="button" class="btn btn-secondary" id="prevBtn" style="visibility: hidden">← Back</button>
-                        <span class="step-label">Step <span id="currentStepNum">1</span> of 5</span>
-                        <button type="button" class="btn btn-primary" id="nextBtn">Next →</button>
-                    </div>
-
-                </form>
-
-                <!-- Results Section -->
-                <div id="resultsSection" class="results-section" style="display: none;">
-                    <div class="results-container">
-
-                        <div class="results-header">
-                            <div class="result-earth" id="resultEarth">🌍</div>
-                            <h2>Your Carbon Footprint</h2>
-                            <div class="result-total-wrap">
-                                <div class="result-total-number" id="totalFootprint">0</div>
-                                <div class="result-total-unit">metric tons CO₂ / year</div>
-                            </div>
-                            <div class="result-rating-badge" id="resultRating"></div>
-                        </div>
-
-                        <!-- Visual Gauge -->
-                        <div class="comparison-section">
-                            <h3>How You Compare</h3>
-                            <div class="comparison-gauge">
-                                <div class="gauge-scale-labels">
-                                    <span>0</span><span>5</span><span>10</span><span>15</span><span>20+</span>
-                                </div>
-                                <div class="gauge-track">
-                                    <div class="gauge-zone green" style="width:10%"></div>
-                                    <div class="gauge-zone yellow" style="width:15%"></div>
-                                    <div class="gauge-zone orange" style="width:25%"></div>
-                                    <div class="gauge-zone red" style="width:50%"></div>
-                                    <div class="gauge-marker" id="gaugeMarker" style="left:0%">
-                                        <div class="gauge-arrow">▼</div>
-                                        <div class="gauge-marker-label">You</div>
-                                    </div>
-                                </div>
-                                <div class="gauge-legend">
-                                    <span class="legend-item green">🎯 Target: 2t</span>
-                                    <span class="legend-item blue">🌎 World avg: 4t</span>
-                                    <span class="legend-item orange">🇺🇸 US avg: 16t</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Comparison Cards -->
-                        <div class="comparison-cards-grid">
-                            <div class="comparison-card">
-                                <div class="comp-icon">🎯</div>
-                                <div class="comp-label">Target Goal</div>
-                                <div class="comp-value">2.0 <span>tons</span></div>
-                            </div>
-                            <div class="comparison-card">
-                                <div class="comp-icon">🌎</div>
-                                <div class="comp-label">World Average</div>
-                                <div class="comp-value">4.0 <span>tons</span></div>
-                            </div>
-                            <div class="comparison-card highlight-card-result">
-                                <div class="comp-icon">👤</div>
-                                <div class="comp-label">Your Footprint</div>
-                                <div class="comp-value" id="userCompValue">– <span>tons</span></div>
-                            </div>
-                            <div class="comparison-card">
-                                <div class="comp-icon">🇺🇸</div>
-                                <div class="comp-label">US Average</div>
-                                <div class="comp-value">16.0 <span>tons</span></div>
-                            </div>
-                        </div>
-
-                        <!-- Breakdown bars -->
-                        <div class="breakdown-section">
-                            <h3>Emissions Breakdown</h3>
-                            <div class="breakdown-grid">
-                                <div class="breakdown-item">
-                                    <div class="breakdown-label">🚗 Transportation</div>
-                                    <div class="breakdown-bar-wrap">
-                                        <div class="breakdown-bar-bg">
-                                            <div class="breakdown-bar-fill" id="transportBar" style="width:0%"></div>
-                                        </div>
-                                        <div class="breakdown-value" id="transportValue">0</div>
-                                    </div>
-                                </div>
-                                <div class="breakdown-item">
-                                    <div class="breakdown-label">🏠 Home Energy</div>
-                                    <div class="breakdown-bar-wrap">
-                                        <div class="breakdown-bar-bg">
-                                            <div class="breakdown-bar-fill" id="homeBar" style="width:0%"></div>
-                                        </div>
-                                        <div class="breakdown-value" id="homeValue">0</div>
-                                    </div>
-                                </div>
-                                <div class="breakdown-item">
-                                    <div class="breakdown-label">🍽️ Food &amp; Diet</div>
-                                    <div class="breakdown-bar-wrap">
-                                        <div class="breakdown-bar-bg">
-                                            <div class="breakdown-bar-fill" id="foodBar" style="width:0%"></div>
-                                        </div>
-                                        <div class="breakdown-value" id="foodValue">0</div>
-                                    </div>
-                                </div>
-                                <div class="breakdown-item">
-                                    <div class="breakdown-label">🛍️ Lifestyle</div>
-                                    <div class="breakdown-bar-wrap">
-                                        <div class="breakdown-bar-bg">
-                                            <div class="breakdown-bar-fill" id="consumptionBar" style="width:0%"></div>
-                                        </div>
-                                        <div class="breakdown-value" id="consumptionValue">0</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Tips -->
-                        <div class="tips-section">
-                            <h3>🌱 Personalized Ways to Reduce Your Impact</h3>
-                            <div id="tipsContainer" class="tips-grid"></div>
-                        </div>
-
-                        <!-- CO2 Cloud -->
-                        <div class="co2-cloud-section">
-                            <h3>🌫️ Portland's Current CO₂ Levels</h3>
-                            <p>Want to see real-time CO₂ measurements in Portland? Check out this live monitoring tool:</p>
-                            <a href="https://co2-cloud.web.app/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                                View Portland CO₂ Levels →
-                            </a>
-                        </div>
-
-                        <div class="results-footer">
-                            <button id="retakeButton" class="btn btn-secondary">← Retake Calculator</button>
-                        </div>
-
-                    </div>
+                <div class="results-footer">
+                    <button id="retakeButton" class="btn btn-secondary">← Retake Calculator</button>
                 </div>
 
             </div>
