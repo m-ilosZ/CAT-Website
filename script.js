@@ -8,11 +8,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (youthCard && modal) {
         function openModal() {
             modal.classList.add('is-open');
+            document.body.classList.add('modal-open');
             modalClose.focus();
         }
 
         function closeModal() {
             modal.classList.remove('is-open');
+            document.body.classList.remove('modal-open');
             youthCard.focus();
         }
 
