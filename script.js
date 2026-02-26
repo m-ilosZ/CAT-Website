@@ -83,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Success - In production, this would submit to a backend
             showSuccess('Registration successful! We look forward to seeing you on March 18th. Check your email for confirmation details.');
             signupForm.reset();
         });
