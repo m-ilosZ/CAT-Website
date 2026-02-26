@@ -70,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const fullName = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
-            const verificationType = document.querySelector('input[name="verificationType"]:checked').value;
             
             // Validation
             if (!fullName || !email) {
@@ -85,6 +84,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
             showSuccess('Registration successful! We look forward to seeing you on March 18th. Check your email for confirmation details.');
             signupForm.reset();
+            // Send data to server
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: fullName,
+                    email: email
+                })
+            })
+            .then(response => response.text())
+            .then(data => {
+                showSuccess('Registration successful! We look forward to seeing you on March 18th. Check your email for confirmation details.');
+                signupForm.reset();
+            })
+            .catch(error => {
+                showError('Error submitting form. Please try again.');
+                console.error('Error:', error);
+            });
         });
 
         function validateEmail(email) {
