@@ -1,5 +1,40 @@
 // Timeline animation on scroll
 document.addEventListener('DOMContentLoaded', function() {
+    // Youth Education card modal
+    const youthCard = document.getElementById('youthEducationCard');
+    const modal = document.getElementById('youthEducationModal');
+    const modalClose = document.getElementById('modalClose');
+
+    if (youthCard && modal) {
+        function openModal() {
+            modal.classList.add('is-open');
+            document.body.classList.add('modal-open');
+            modalClose.focus();
+        }
+
+        function closeModal() {
+            modal.classList.remove('is-open');
+            document.body.classList.remove('modal-open');
+            youthCard.focus();
+        }
+
+        youthCard.addEventListener('click', openModal);
+        youthCard.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openModal();
+            }
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+        });
+    }
+
     // Animate timeline items on scroll
     const observerOptions = {
         threshold: 0.2,
