@@ -82,6 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            showSuccess('Registration successful! We look forward to seeing you on March 18th. Check your email for confirmation details.');
+            signupForm.reset();
             // Send data to server
             fetch('/signup', {
                 method: 'POST',
